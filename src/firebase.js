@@ -5,12 +5,12 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAptJyMRrYRvOcSfvO4xYkW6ypxENp5qNU",
-  authDomain: "wedding-album-b0cf7.firebaseapp.com",
-  projectId: "wedding-album-b0cf7",
-  storageBucket: "wedding-album-b0cf7.firebasestorage.app",
-  messagingSenderId: "1010912297271",
-  appId: "1:1010912297271:web:d5571b17a7a07b748adab2"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 const app = initializeApp(firebaseConfig);
