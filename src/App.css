@@ -1,0 +1,139 @@
+/* הגדרת משתני צבע - אפשר לשחק עם זה! */
+:root {
+  --primary-color: #D4AF37; /* צבע זהב/שמפניה קלאסי */
+  --primary-hover: #b5952f;
+  --text-dark: #2c2c2c;
+  --text-light: #5a5a5a;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Assistant', sans-serif;
+  direction: rtl; /* יישור לימין לעברית */
+  
+  /* הפתרון: גרדיאנט שחור חצי-שקוף שיושב בדיוק מעל התמונה */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('/bg.jpg'); 
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+.App {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  text-align: center;
+  
+  /* אפקט הזכוכית - Glassmorphism */
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+h1 {
+  font-family: 'Frank Ruhl Libre', serif;
+  color: var(--primary-color);
+  font-size: 3rem;
+  margin-bottom: 5px;
+}
+
+h2 {
+  font-family: 'Frank Ruhl Libre', serif;
+  color: var(--text-dark);
+}
+
+p {
+  color: var(--text-light);
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+/* עיצוב מותאם לכפתור בחירת הקבצים */
+.custom-file-upload {
+  display: inline-block;
+  padding: 12px 25px;
+  cursor: pointer;
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.custom-file-upload:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* העלמת כפתור ה-Upload המכוער של הדפדפן */
+input[type="file"] {
+  display: none;
+}
+
+.upload-action-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+}
+
+.upload-action-btn:hover:not(:disabled) {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+.upload-action-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.media-card {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.media-card:hover {
+  transform: scale(1.05);
+}
+
+.media-card img, .media-card video {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+/* התאמה למסכים קטנים (טלפונים) */
+@media (max-width: 600px) {
+  .App {
+    margin: 15px;
+    padding: 20px 10px;
+  }
+  h1 {
+    font-size: 2.2rem;
+  }
+}
