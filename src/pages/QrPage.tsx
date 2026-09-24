@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Gem, Printer } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { eventConfig } from '../config/event';
 import { EVENT_CODE_QUERY_PARAM } from '../lib/eventCode';
@@ -16,7 +17,10 @@ export function QrPage() {
   return (
     <main className="page qr-page">
       <section className="card card--center qr-card">
-        <h1>{eventConfig.coupleNames} 💍</h1>
+        <h1>
+          {eventConfig.coupleNames}
+          <Gem className="icon icon--lead" aria-hidden="true" />
+        </h1>
         <p className="lead">סרקו כדי לשתף איתנו את התמונות שלכם מהחתונה</p>
         <QRCodeSVG value={link} size={320} level="M" marginSize={2} title={link} />
         {eventConfig.eventCode && (
@@ -30,6 +34,7 @@ export function QrPage() {
       </section>
       <p className="qr-page__hint no-print">
         <button type="button" className="btn btn--primary" onClick={() => window.print()}>
+          <Printer className="icon" aria-hidden="true" />
           הדפסה
         </button>
       </p>

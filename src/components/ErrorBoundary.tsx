@@ -1,4 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
+import { Frown } from 'lucide-react';
 
 interface Props {
   children: ReactNode;
@@ -24,7 +25,9 @@ export class ErrorBoundary extends Component<Props, State> {
     return (
       <main className="page" role="alert">
         <section className="card card--center">
-          <h1>משהו השתבש 😕</h1>
+          <h1>
+            <Frown className="icon" aria-hidden="true" /> משהו השתבש
+          </h1>
           <p className="lead">רעננו את הדף ונסו שוב. אם זה חוזר, ספרו לנו.</p>
           <button type="button" className="btn btn--primary" onClick={() => location.reload()}>
             רענון

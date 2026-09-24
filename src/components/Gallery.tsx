@@ -1,4 +1,5 @@
 import { lazy, Suspense, useState } from 'react';
+import { ImagePlus } from 'lucide-react';
 import { useMediaFeed } from '../hooks/useMediaFeed';
 import { LoadMore } from './LoadMore';
 import { MediaCard } from './MediaCard';
@@ -26,7 +27,12 @@ export function Gallery({ enabled }: Props) {
     );
   }
   if (feed.items.length === 0) {
-    return <p className="muted">עדיין אין תמונות בגלריה. תהיו הראשונים להעלות! 😊</p>;
+    return (
+      <p className="muted">
+        <ImagePlus className="icon" aria-hidden="true" /> עדיין אין תמונות בגלריה. תהיו הראשונים
+        להעלות!
+      </p>
+    );
   }
 
   return (

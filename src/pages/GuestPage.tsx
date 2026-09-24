@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Gem, Images } from 'lucide-react';
 import { EventCodeGate } from '../components/EventCodeGate';
 import { Gallery } from '../components/Gallery';
 import { Uploader } from '../components/Uploader';
@@ -15,7 +16,10 @@ export function GuestPage() {
   return (
     <main className="page">
       <header className="page__header">
-        <h1>{eventConfig.title} 💍</h1>
+        <h1>
+          {eventConfig.title}
+          <Gem className="icon icon--lead" aria-hidden="true" />
+        </h1>
         <p className="lead">{eventConfig.subtitle}</p>
       </header>
 
@@ -32,7 +36,9 @@ export function GuestPage() {
         </section>
 
         <section className="card" aria-labelledby="gallery-title">
-          <h2 id="gallery-title">גלריית האירוע ✨</h2>
+          <h2 id="gallery-title">
+            <Images className="icon" aria-hidden="true" /> גלריית האירוע
+          </h2>
           <Gallery enabled={status === 'ready'} />
         </section>
       </EventCodeGate>

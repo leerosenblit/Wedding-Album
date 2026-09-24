@@ -1,6 +1,5 @@
-import { useState, type ChangeEvent, type FormEvent } from 'react';
-import { eventConfig } from '../config/event';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+import { type ChangeEvent, type FormEvent } from 'react';
+import { Camera, Send } from 'lucide-react';
 import { useToast } from '../hooks/useToast';
 import { useUpload, type UploadItem } from '../hooks/useUpload';
 
@@ -8,8 +7,6 @@ interface Props {
   /** Null until anonymous sign-in completes. */
   uid: string | null;
 }
-
-const GUEST_NAME_KEY = 'wedding:guestName';
 
 function statusLabel(item: UploadItem): string {
   switch (item.status) {
@@ -29,11 +26,8 @@ function statusLabel(item: UploadItem): string {
 export function Uploader({ uid }: Props) {
   const upload = useUpload(uid);
   const toast = useToast();
-  const [guestName, setGuestName] = useLocalStorage(GUEST_NAME_KEY);
-  const [caption, setCaption] = useState('');
 
   const pending = upload.items.filter((item) => item.status !== 'done').length;
-  const meta = { guestName, caption };
 
   const onFilesChosen = (event: ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files ?? []);
@@ -46,14 +40,10 @@ export function Uploader({ uid }: Props) {
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
     try {
-      const { done, failed } = await upload.start(meta);
+      const { done, failed } = await upload.start({});
       if (failed === 0) {
-        toast.show(
-          done === 1 ? 'הקובץ הועלה בהצלחה! 🎉' : `${done} קבצים הועלו בהצלחה! 🎉`,
-          'success',
-        );
+        toast.show(done === 1 ? 'הקובץ הועלה בהצלחה!' : `${done} קבצים הועלו בהצלחה!`, 'success');
         upload.reset();
-        setCaption('');
       } else {
         toast.show(`${done} הועלו, ${failed} נכשלו. אפשר לנסות שוב.`, 'error');
       }
@@ -63,46 +53,18 @@ export function Uploader({ uid }: Props) {
   };
 
   const onRetry = async (id: string) => {
-    const { failed } = await upload.retry(id, meta);
-    if (failed === 0) toast.show('הקובץ הועלה בהצלחה! 🎉', 'success');
+    const { failed } = await upload.retry(id, {});
+    if (failed === 0) toast.show('הקובץ הועלה בהצלחה!', 'success');
   };
 
   const buttonLabel = upload.isUploading
     ? `מעלה… (${upload.doneCount}/${upload.items.length})`
     : pending > 0
-      ? `🚀 שלחו ${pending === 1 ? 'קובץ אחד' : `${pending} קבצים`}`
+      ? `שלחו ${pending === 1 ? 'קובץ אחד' : `${pending} קבצים`}`
       : 'ממתין לקבצים…';
 
   return (
     <form className="uploader" onSubmit={onSubmit}>
-      <div className="uploader__meta">
-        <label className="field">
-          <span className="field__label">השם שלכם (לא חובה)</span>
-          <input
-            className="input"
-            type="text"
-            name="guestName"
-            autoComplete="name"
-            maxLength={eventConfig.limits.guestNameMax}
-            value={guestName}
-            onChange={(e) => setGuestName(e.target.value)}
-            disabled={upload.isUploading}
-          />
-        </label>
-        <label className="field">
-          <span className="field__label">כמה מילים (לא חובה)</span>
-          <input
-            className="input"
-            type="text"
-            name="caption"
-            maxLength={eventConfig.limits.captionMax}
-            value={caption}
-            onChange={(e) => setCaption(e.target.value)}
-            disabled={upload.isUploading}
-          />
-        </label>
-      </div>
-
       <label className="file-picker">
         <input
           className="visually-hidden"
@@ -114,7 +76,8 @@ export function Uploader({ uid }: Props) {
           data-testid="file-input"
         />
         <span className="btn btn--outline" aria-hidden="true">
-          📸 לחצו כאן לבחירת תמונות וסרטונים
+          <Camera className="icon" />
+          לחצו כאן לבחירת תמונות וסרטונים
         </span>
       </label>
 
@@ -167,6 +130,7 @@ export function Uploader({ uid }: Props) {
           className="btn btn--primary"
           disabled={pending === 0 || upload.isUploading || !uid}
         >
+          {pending > 0 && !upload.isUploading && <Send className="icon" aria-hidden="true" />}
           {buttonLabel}
         </button>
       </div>

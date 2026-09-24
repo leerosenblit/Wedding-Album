@@ -515,3 +515,19 @@
     animation: none !important;
   }
 }
+
+/* Icons */
+.icon {
+  display: inline-block;
+  width: 1.15em;
+  height: 1.15em;
+  vertical-align: -0.2em;
+  flex-shrink: 0;
+}
+
+.icon--lead {
+  width: 1.6em;
+  height: 1.6em;
+  color: var(--gold);
+  margin-inline-start: 0.35em;
+}

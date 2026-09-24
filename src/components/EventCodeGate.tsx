@@ -45,7 +45,7 @@ export function EventCodeGate({ children }: { children: ReactNode }) {
       setUnlocked(true);
       return;
     }
-    setError('הקוד לא נכון. הוא מופיע על הכרטיס שעל השולחן 🙂');
+    setError('הקוד לא נכון. הוא מופיע על הכרטיס שעל השולחן.');
   };
 
   return (

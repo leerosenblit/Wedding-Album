@@ -26,13 +26,13 @@ npx firebase login
 
 ### Environment variables
 
-| Variable                  | Where to get it                                            |
-| ------------------------- | ---------------------------------------------------------- |
-| `VITE_FIREBASE_*`         | Firebase console → Project settings → Your apps → Web app  |
-| `VITE_RECAPTCHA_SITE_KEY` | reCAPTCHA Enterprise site key registered in App Check      |
-| `VITE_EVENT_CODE`         | Any short code you print on the cards. Empty = no gate.    |
-| `VITE_SITE_URL`           | The Hosting URL, used to build the QR link                 |
-| `VITE_USE_EMULATORS`      | `true` to point the app at local emulators                 |
+| Variable                  | Where to get it                                           |
+| ------------------------- | --------------------------------------------------------- |
+| `VITE_FIREBASE_*`         | Firebase console → Project settings → Your apps → Web app |
+| `VITE_RECAPTCHA_SITE_KEY` | reCAPTCHA Enterprise site key registered in App Check     |
+| `VITE_EVENT_CODE`         | Any short code you print on the cards. Empty = no gate.   |
+| `VITE_SITE_URL`           | The Hosting URL, used to build the QR link                |
+| `VITE_USE_EMULATORS`      | `true` to point the app at local emulators                |
 
 The Firebase web config is public by design, but the API key must be **restricted** (see Security).
 
