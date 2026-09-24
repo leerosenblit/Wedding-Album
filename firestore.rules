@@ -1,0 +1,49 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && 'admin' in request.auth.token && request.auth.token.admin == true;
+    }
+
+    function isOptionalString(data, key, maxLen) {
+      return !(key in data) || (data[key] is string && data[key].size() <= maxLen);
+    }
+
+    function validCreate(d) {
+      return d.keys().hasOnly([
+          'url', 'type', 'timestamp', 'storagePath', 'uid', 'hidden',
+          'thumbUrl', 'thumbPath', 'caption', 'guestName'
+        ])
+        && d.keys().hasAll(['url', 'type', 'timestamp', 'storagePath', 'uid', 'hidden'])
+        && d.url is string && d.url.size() > 0 && d.url.size() < 2048
+        && d.type in ['image', 'video']
+        && d.timestamp == request.time
+        && d.storagePath is string
+        && d.storagePath.matches('^uploads/[A-Za-z0-9-]+\\.[a-z0-9]{1,5}$')
+        && d.uid == request.auth.uid
+        && d.hidden == false
+        && isOptionalString(d, 'thumbUrl', 2048)
+        && (!('thumbPath' in d)
+            || (d.thumbPath is string
+                && d.thumbPath.matches('^uploads/thumbs/[A-Za-z0-9-]+\\.[a-z0-9]{1,5}$')))
+        && isOptionalString(d, 'caption', 200)
+        && isOptionalString(d, 'guestName', 50);
+    }
+
+    match /media/{mediaId} {
+      allow read: if isSignedIn() && (isAdmin() || resource.data.hidden == false);
+      allow create: if isSignedIn() && validCreate(request.resource.data);
+      allow update, delete: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

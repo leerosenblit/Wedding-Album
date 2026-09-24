@@ -1,0 +1,42 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && 'admin' in request.auth.token && request.auth.token.admin == true;
+    }
+
+    function isImage(maxBytes) {
+      return request.resource.contentType.matches('image/.*')
+        && request.resource.size <= maxBytes;
+    }
+
+    function isVideo(maxBytes) {
+      return request.resource.contentType.matches('video/.*')
+        && request.resource.size <= maxBytes;
+    }
+
+    // Full-size uploads. {file} is a single path segment, so this does not match thumbs/.
+    match /uploads/{file} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && (isImage(10 * 1024 * 1024) || isVideo(50 * 1024 * 1024));
+      allow update, delete: if isAdmin();
+    }
+
+    // Client-generated thumbnails.
+    match /uploads/thumbs/{file} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isImage(512 * 1024);
+      allow update, delete: if isAdmin();
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

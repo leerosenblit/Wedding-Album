@@ -1,29 +1,58 @@
 {
   "name": "wedding-media-app",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc -b",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:rules": "node scripts/withJava.mjs firebase emulators:exec --only auth,firestore,storage \"vitest run --config vitest.rules.config.ts\"",
+    "emulators": "node scripts/withJava.mjs firebase emulators:start",
+    "deploy:rules": "firebase deploy --only firestore,storage",
+    "deploy:hosting": "npm run build && firebase deploy --only hosting",
+    "admin:claim": "tsx scripts/setAdminClaim.ts",
+    "export": "tsx scripts/downloadAll.ts"
   },
   "dependencies": {
     "browser-image-compression": "^2.0.2",
     "firebase": "^12.11.0",
+    "jszip": "^3.10.2",
+    "qrcode.react": "^4.2.0",
     "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "react-dom": "^19.2.4",
+    "react-router-dom": "^7.18.4",
+    "yet-another-react-lightbox": "^3.32.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
+    "@firebase/rules-unit-testing": "^5.0.2",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
+    "@types/node": "^26.6.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^9.39.4",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
+    "firebase-tools": "^15.31.0",
     "globals": "^17.4.0",
-    "vite": "^8.0.4"
+    "jsdom": "^29.1.1",
+    "prettier": "^3.9.9",
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.70.1",
+    "vite": "^8.0.4",
+    "vite-plugin-pwa": "^1.3.0",
+    "vitest": "^5.0.1"
   }
 }

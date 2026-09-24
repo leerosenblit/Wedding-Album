@@ -22,3 +22,20 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Firebase
+.firebase/
+*-debug.log
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+storage-debug.log
+
+# Secrets
+service-account*.json
+.env
+
+# Tooling
+coverage/
+*.tsbuildinfo
+export/
