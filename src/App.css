@@ -531,3 +531,38 @@
   color: var(--gold);
   margin-inline-start: 0.35em;
 }
+
+/* Guest select-to-download */
+.gallery-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.media-card__check {
+  position: absolute;
+  top: 6px;
+  inset-inline-end: 6px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background: rgba(0, 0, 0, 0.45);
+  color: transparent;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.media-card__check--on {
+  background: var(--gold);
+  color: #fff;
+}
+
+.gallery-grid--selecting .media-card__button {
+  cursor: pointer;
+}
