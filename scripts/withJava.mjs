@@ -5,7 +5,7 @@
  *
  *   node scripts/withJava.mjs firebase emulators:start
  */
-import { execFileSync, spawnSync } from 'node:child_process';
+import { spawnSync } from 'node:child_process';
 import { existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -15,10 +15,9 @@ const home = process.env.USERPROFILE ?? process.env.HOME ?? '';
 
 function javaMajor(javaBin) {
   try {
-    const out = execFileSync(javaBin, ['-version'], {
-      encoding: 'utf8',
-      stdio: ['ignore', 'pipe', 'pipe'],
-    });
+    // `java -version` prints to stderr, so read both streams.
+    const result = spawnSync(javaBin, ['-version'], { encoding: 'utf8' });
+    const out = `${result.stdout ?? ''}${result.stderr ?? ''}`;
     const match = /version "(\d+)/.exec(out);
     return match ? Number(match[1]) : 0;
   } catch {
@@ -78,5 +77,9 @@ if (bin) {
   console.log(`Using JDK at ${bin}`);
 }
 
-const result = spawnSync(cmd, args, { stdio: 'inherit', env, shell: true });
+// Run through a shell so `firebase` resolves to node_modules/.bin on every OS,
+// re-quoting arguments that contain spaces (the emulators:exec script, for one).
+const quote = (value) => (/\s/.test(value) ? `"${value.replace(/"/g, '\\"')}"` : value);
+const commandLine = [cmd, ...args].map(quote).join(' ');
+const result = spawnSync(commandLine, { stdio: 'inherit', env, shell: true });
 process.exit(result.status ?? 1);
